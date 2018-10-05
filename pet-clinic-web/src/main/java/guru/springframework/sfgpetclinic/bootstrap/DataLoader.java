@@ -1,13 +1,7 @@
 package guru.springframework.sfgpetclinic.bootstrap;
 
-import guru.springframework.sfgpetclinic.model.Owner;
-import guru.springframework.sfgpetclinic.model.Pet;
-import guru.springframework.sfgpetclinic.model.PetType;
-import guru.springframework.sfgpetclinic.model.Vet;
-import guru.springframework.sfgpetclinic.services.OwnerService;
-import guru.springframework.sfgpetclinic.services.PetService;
-import guru.springframework.sfgpetclinic.services.PetTypeService;
-import guru.springframework.sfgpetclinic.services.VetService;
+import guru.springframework.sfgpetclinic.model.*;
+import guru.springframework.sfgpetclinic.services.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -19,17 +13,30 @@ public class DataLoader implements CommandLineRunner{
     private final VetService vetService;
     private final PetTypeService petTypeService;
     private final PetService petService;
+    private final SpecialtyService specialtyService;
 
-    public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService, PetService petService) {
+    public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService, PetService petService, SpecialtyService specialtyService) {
         this.ownerService = ownerService;
         this.vetService = vetService;
         this.petTypeService = petTypeService;
         this.petService = petService;
+        this.specialtyService = specialtyService;
     }
 
     // the run method will run at startup
     @Override
     public void run(String... args) throws Exception {
+        int count = petTypeService.findAll().size();
+        if (count == 0) {
+            loadData();
+        }
+    }
+
+    private void loadData () {
+        Specialty radiology = makeSpecialty("radiology");
+        Specialty surgery = makeSpecialty("surgery");
+        Specialty dentistry= makeSpecialty("dentistry");
+
         PetType dog = makePetType("dog");
         PetType cat = makePetType("cat");
 
@@ -56,17 +63,28 @@ public class DataLoader implements CommandLineRunner{
         Vet vet1 = new Vet();
         vet1.setFirstName("hermione");
         vet1.setLastName("granger");
+        vet1.getSpecialties().add(radiology);
+        vet1.getSpecialties().add(dentistry);
 
         vetService.save(vet1);
 
         Vet vet2 = new Vet();
         vet2.setFirstName("ginny");
         vet2.setLastName("weasley");
+        vet2.getSpecialties().add(dentistry);
+        vet2.getSpecialties().add(surgery);
 
         vetService.save(vet2);
 
         System.out.println("loaded vets");
 
+    }
+
+    private Specialty makeSpecialty(String d) {
+        Specialty s = new Specialty();
+        s.setDescription(d);
+
+        return specialtyService.save(s);
     }
 
     private Pet makePet(String name, LocalDate date, PetType type, Owner owner) {
