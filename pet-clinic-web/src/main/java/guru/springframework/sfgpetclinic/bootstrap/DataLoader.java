@@ -14,13 +14,16 @@ public class DataLoader implements CommandLineRunner{
     private final PetTypeService petTypeService;
     private final PetService petService;
     private final SpecialtyService specialtyService;
+    private final VisitService visitService;
 
-    public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService, PetService petService, SpecialtyService specialtyService) {
+    public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService,
+                      PetService petService, SpecialtyService specialtyService, VisitService visitService) {
         this.ownerService = ownerService;
         this.vetService = vetService;
         this.petTypeService = petTypeService;
         this.petService = petService;
         this.specialtyService = specialtyService;
+        this.visitService = visitService;
     }
 
     // the run method will run at startup
@@ -57,6 +60,12 @@ public class DataLoader implements CommandLineRunner{
 
         owner2 = ownerService.save(owner2);
         Pet pet2 = makePet("stupid cat", LocalDate.now(), cat, owner2);
+
+        Visit visit = new Visit();
+        visit.setDate(LocalDate.now());
+        visit.setPet(pet2);
+        visit.setDescription("sick cat");
+        visitService.save(visit);
 
         System.out.println("loaded owners");
 
