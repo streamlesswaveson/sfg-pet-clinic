@@ -1,13 +1,15 @@
 package guru.springframework.sfgpetclinic.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 public class Visit extends BaseEntity{
     @Column(name = "date")

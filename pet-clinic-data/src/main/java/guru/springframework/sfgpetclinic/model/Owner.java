@@ -1,7 +1,6 @@
 package guru.springframework.sfgpetclinic.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +11,9 @@ import java.util.Set;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity(name = "owner")
 public class Owner extends Person {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
