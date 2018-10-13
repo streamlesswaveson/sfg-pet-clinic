@@ -29,6 +29,8 @@
         <!--<junit5.version>5.0.0-M4</junit5.version>-->
         <!--<junit5.version>5.0.3</junit5.version>-->
         <junit5.version>5.3.1</junit5.version>
+        <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
+        <mockito-junit-jupiter.version>2.23.0</mockito-junit-jupiter.version>
     </properties>
 
     <dependencies>
